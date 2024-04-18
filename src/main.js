@@ -59,6 +59,14 @@ const updateItems = () => {
     const contextMenu = Menu.buildFromTemplate(items)
 
     tray.setContextMenu(contextMenu)
+
+    if (!tray.hasClickHandler) {
+        tray.on('click', () => {
+            tray.popUpContextMenu(contextMenu);
+        });
+
+        tray.hasClickHandler = true;
+    }
 }
 
 app.on('ready', () => {
