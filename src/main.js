@@ -10,7 +10,7 @@ let popup = null;
 const updateItems = () => {
     if (!tray) {
         tray = new Tray(path.join(__dirname, 'icon.png'))
-        tray.setToolTip('QuickMenu')
+        tray.setToolTip('QuickPaste')
     }
 
     let storeItems = store.get()
