@@ -1,5 +1,5 @@
 {
-    "name": "quickmenu",
+    "name": "quickpaste",
     "version": "1.0.0",
     "description": "",
     "main": "./src/main.js",
@@ -14,8 +14,8 @@
         "electronDownload": {
             "mirror": "https://github.com/electron/electron/releases/download/v"
         },
-        "appId": "com.example.quickmenu",
-        "productName": "QuickMenu",
+        "appId": "com.example.quickpaste",
+        "productName": "QuickPaste",
         "directories": {
             "output": "dist"
         },
