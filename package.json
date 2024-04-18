@@ -5,14 +5,34 @@
     "main": "./src/main.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "electron ."
+        "start": "electron .",
+        "dist": "electron-builder"
     },
     "author": "",
     "license": "ISC",
+    "build": {
+        "electronDownload": {
+            "mirror": "https://github.com/electron/electron/releases/download/v"
+        },
+        "appId": "com.example.quickmenu",
+        "productName": "QuickMenu",
+        "directories": {
+            "output": "dist"
+        },
+        "mac": {
+            "category": "public.app-category.utilities",
+            "target": [
+                "dir"
+            ]
+        },
+        "win": {
+            "target": [
+                "portable"
+            ]
+        }
+    },
     "devDependencies": {
-        "@electron/packager": "^18.3.2",
         "electron": "^30.0.0",
-        "electron-builder": "^24.13.3",
-        "electron-packager": "^17.1.2"
+        "electron-builder": "^24.13.3"
     }
 }

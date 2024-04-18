@@ -8,7 +8,6 @@ let store = new Store()
 let popup = null;
 
 const updateItems = () => {
-
     if (!tray) {
         tray = new Tray(path.join(__dirname, 'icon.png'))
         tray.setToolTip('QuickMenu')
@@ -67,7 +66,7 @@ app.on('ready', () => {
         app.dock.hide(); // 在MacOS上隐藏dock图标
     }
 
-    popup = new Popup();
+    popup = new Popup(updateItems);
 
     updateItems();
 })

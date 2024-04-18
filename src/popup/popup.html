@@ -34,8 +34,6 @@
     <script>
         const { createApp, reactive } = Vue;
         const { ipcRenderer } = require('electron');
-        const Store = require('./../store/store.js')
-        const store = new Store()
         
         const App = createApp({
             setup() {
@@ -49,8 +47,8 @@
                 }
 
                 const addItem = () => {
-                    store.push(form)
-
+                    ipcRenderer.send('add-item', JSON.parse(JSON.stringify(form)))
+                    ipcRenderer.send('refresh-item')
                     ipcRenderer.send('hide')
                 }
 

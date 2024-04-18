@@ -1,14 +1,16 @@
 const fs = require('fs');
-const STORE_FILE_PATH = `${__dirname}/store.json`
+const path = require('path');
+const electron = require('electron');
+
+const USER_DATA_PATH = (electron.app || electron.remote.app).getPath('userData');
+const STORE_FILE_PATH = path.join(USER_DATA_PATH, 'store.json');
 
 class Store {
     constructor() {
         try {
             const items = fs.readFileSync(STORE_FILE_PATH, { encoding: 'utf8' });
 
-            if (items) {
-                this.items = JSON.parse(items);
-            } else {
+            if (!items) {
                 this.initFile()
             }
         } catch (error) {
@@ -27,21 +29,21 @@ class Store {
 
         fs.writeFileSync(STORE_FILE_PATH, defaultData, { encoding: 'utf8' });
 
-        this.items = JSON.parse(defaultData)
-
         console.log('store创建完毕');
     }
 
     push(item) {
+        let items = this.get();
+
         item.id = this.createID()
 
-        this.items.push(item)
+        items.push(item)
 
-        fs.writeFileSync(STORE_FILE_PATH, JSON.stringify(this.items), { encoding: 'utf8' });
+        fs.writeFileSync(STORE_FILE_PATH, JSON.stringify(items), { encoding: 'utf8' });
     }
 
     get(id) {
-        let items = this.items;
+        let items = JSON.parse(fs.readFileSync(STORE_FILE_PATH, { encoding: 'utf8' }));
         let res;
 
         if (!id) {
