@@ -27,7 +27,10 @@
         },
         "win": {
             "target": [
-                "portable"
+                {
+                    "target": "portable",
+                    "arch": ["x64"]
+                }
             ]
         }
     },
