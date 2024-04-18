@@ -1,8 +1,8 @@
 # QuickPaste
 
-### QuickPaste is a lightweight and cross platform clipboard management tool designed to improve work efficiency. This software allows users to easily add, manage, and access commonly used custom clipboard content. Through simple click operations, QuickPaste can pop up a shortcut paste menu from the system taskbar, allowing users to quickly select and paste text fragments or code. At runtime, QuickPaste will be hidden in the system taskbar, not interfering with your workflow, providing a clean and non-interference user experience. Whether you are a programmer, writer, or data analyst, QuickPaste is a powerful assistant for optimizing your workflow and saving time.
-
 <img src="./image/p.png" width="300">
+
+### QuickPaste is a lightweight and cross platform clipboard management tool designed to improve work efficiency. This software allows users to easily add, manage, and access commonly used custom clipboard content. Through simple click operations, QuickPaste can pop up a shortcut paste menu from the system taskbar, allowing users to quickly select and paste text fragments or code. At runtime, QuickPaste will be hidden in the system taskbar, not interfering with your workflow, providing a clean and non-interference user experience. Whether you are a programmer, writer, or data analyst, QuickPaste is a powerful assistant for optimizing your workflow and saving time.
 
 ## COMPILE
 
