@@ -1,4 +1,4 @@
-const { BrowserWindow, ipcMain, screen } = require('electron')
+const { BrowserWindow, ipcMain, screen, Notification } = require('electron')
 const Store = require('./../store/store.js')
 const path = require('path')
 
@@ -25,13 +25,13 @@ class Popup {
 
         const x = Math.round((width - 400) / 2); // 计算屏幕中央的 x 坐标
         popupWindow.setPosition(x, 100);
-        
+
         popupWindow.loadURL('file://' + path.join(__dirname, 'popup.html'))
-        
+
         popupWindow.on('closed', () => {
             popupWindow = null
         })
-        
+
         popupWindow.hide()
 
         this.popupWindow = popupWindow
@@ -54,11 +54,22 @@ class Popup {
 
         ipcMain.on('add-item', (event, args) => {
             store.push(args)
+
+            if (Notification.isSupported()) {
+                const notification = new Notification({
+                    title: '添加成功',
+                    body: '可在菜单中找到添加项'
+                });
+    
+                notification.show();
+            }
         })
     }
 
     show() {
         this.popupWindow.show()
+
+        this.popupWindow.webContents.send('window-show');
     }
 
     hide() {

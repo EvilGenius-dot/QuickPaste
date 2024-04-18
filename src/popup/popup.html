@@ -34,7 +34,7 @@
         </el-form>
     </div>
     <script>
-        const { createApp, reactive } = Vue;
+        const { createApp, reactive, ref, onMounted } = Vue;
         const { ipcRenderer } = require('electron');
         
         const App = createApp({
@@ -43,6 +43,8 @@
                     label: '',
                     clipboard: ''
                 });
+
+                const nameRef = ref(null);
 
                 const hide = () => {
                     ipcRenderer.send('hide');
@@ -53,6 +55,11 @@
                     ipcRenderer.send('refresh-item')
                     ipcRenderer.send('hide')
                 }
+
+                ipcRenderer.on('window-show', () => {
+                    form.label = ''
+                    form.clipboard = ''
+                });
 
                 return { form, hide, addItem };
             }

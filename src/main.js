@@ -28,7 +28,29 @@ const updateItems = () => {
                 }
             }
         },
-        { label: '设置', type: 'normal' },
+        {
+            label: '开机启动',
+            type: 'checkbox',
+            checked: true,
+            click: (menuItem) => {
+                if (menuItem.checked) {
+                    app.setLoginItemSettings({
+                        openAtLogin: true,
+                        openAsHidden: true,
+                        path: app.getPath('exe')
+                    });
+                } else {
+                    app.setLoginItemSettings({
+                        openAtLogin: false,
+                        openAsHidden: false,
+                    });
+                }
+            }
+        },
+        {
+            label: '设置顺序',
+            type: 'normal'
+        },
         { type: 'separator' },
         {
             label: '按住 [SHIFT + 鼠标左键] 单击某一项进行编辑',
@@ -70,6 +92,12 @@ const updateItems = () => {
 }
 
 app.on('ready', () => {
+    app.setLoginItemSettings({
+        openAtLogin: true, // 应用将在登录时自动启动
+        openAsHidden: true, // 可选，应用将在后台启动，不会打扰用户（macOS）
+        path: app.getPath('exe') // 指定启动程序的路径（通常是应用的可执行文件）
+    });
+
     if (app.dock) {
         app.dock.hide(); // 在MacOS上隐藏dock图标
     }
