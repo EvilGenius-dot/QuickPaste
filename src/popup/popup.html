@@ -1,11 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <script src="./../assets/js/vue.global.prod.js"></script>
+    <link rel="stylesheet" href="./../assets/css/element-plus.css">
+    <script src="./../assets/js/element.full.min.js"></script>
+    <style>
+        body {
+            padding: 15px;
+        }
+    </style>
 </head>
+
 <body>
-    1
+    <div id="app">
+        <el-form :model="form" label-width="auto" size="small">
+            <el-form-item label="标签名称">
+                <el-input v-model="form.label" placeholder="此处输入列表中显示的内容"/>
+            </el-form-item>
+            <el-form-item label="剪贴板内容">
+                <el-input v-model="form.clipboard" placeholder="此处输入选中后剪贴板中的内容" type="textarea" :rows="3"/>
+            </el-form-item>
+            <el-form-item label=" ">
+                <el-button type="primary">添加</el-button>
+                <el-button @click="hide">取消</el-button>
+              </el-form-item>
+        </el-form>
+    </div>
+    <script>
+        const { createApp, reactive } = Vue;
+        const { ipcRenderer } = require('electron');
+        
+        const App = createApp({
+            setup() {
+                const form = reactive({
+                    label: '',
+                    clipboard: ''
+                });
+
+                const hide = () => {
+                    console.log(123)
+                    ipcRenderer.send('hide');
+                }
+
+                return { form, hide };
+            }
+        });
+
+        App.use(ElementPlus);
+        App.mount('#app');
+    </script>
 </body>
+
 </html>

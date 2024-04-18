@@ -1,6 +1,7 @@
 const { app, Menu, Tray, clipboard, BrowserWindow } = require('electron')
 const path = require('path')
 const Popup = require('./popup/popup.js')
+const Store = require('./store/store.js')
 
 let tray = null
 
@@ -11,6 +12,7 @@ app.on('ready', () => {
 
     tray = new Tray(path.join(__dirname, 'icon.png'))
 
+    const store = new Store()
     const popup = new Popup()
 
     const contextMenu = Menu.buildFromTemplate([
@@ -25,6 +27,7 @@ app.on('ready', () => {
                 }
             }
         },
+        { label: '设置', type: 'normal' },
         { type: 'separator' },
         { 
             label: '按住 [SHIFT + 鼠标左键] 单击某一项进行编辑', 
