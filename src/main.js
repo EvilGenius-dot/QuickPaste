@@ -1,11 +1,13 @@
-const { app, Menu, Tray, clipboard, BrowserWindow } = require('electron')
+const { app, Menu, Tray, clipboard, Notification } = require('electron')
 const path = require('path')
 const Popup = require('./popup/popup.js')
+const Edit = require('./edit/edit.js')
 const Store = require('./store/store.js')
 
-let tray = null
 let store = new Store()
+let tray = null
 let popup = null;
+let edit = null;
 
 const updateItems = () => {
     if (!tray) {
@@ -21,11 +23,7 @@ const updateItems = () => {
             label: '添加选项',
             type: 'normal',
             click: (menuItem, browserWindow, event) => {
-                if (event.shiftKey) {
-
-                } else {
-                    popup.show()
-                }
+                popup.show()
             }
         },
         {
@@ -39,17 +37,31 @@ const updateItems = () => {
                         openAsHidden: true,
                         path: app.getPath('exe')
                     });
+
+                    if (Notification.isSupported()) { 
+                        const notification = new Notification({
+                            title: 'QuickPaste',
+                            body: '已设置开机启动。'
+                        });
+                    
+                        notification.show();
+                    }
                 } else {
                     app.setLoginItemSettings({
                         openAtLogin: false,
                         openAsHidden: false,
                     });
+
+                    if (Notification.isSupported()) { 
+                        const notification = new Notification({
+                            title: 'QuickPaste',
+                            body: '已关闭开机启动。'
+                        });
+                    
+                        notification.show();
+                    }
                 }
             }
-        },
-        {
-            label: '设置顺序',
-            type: 'normal'
         },
         { type: 'separator' },
         {
@@ -66,8 +78,12 @@ const updateItems = () => {
             {
                 type: 'normal',
                 label: storeItem.label,
-                click: () => {
-                    clipboard.writeText(storeItem.clipboard);
+                click: (a, b, c) => {
+                    if (c.shiftKey) {
+                        edit.show(storeItem)
+                    } else {
+                        clipboard.writeText(storeItem.clipboard);
+                    }
                 }
             }
         )
@@ -103,6 +119,16 @@ app.on('ready', () => {
     }
 
     popup = new Popup(updateItems);
+    edit = new Edit(updateItems)
 
     updateItems();
+
+    if (Notification.isSupported()) {
+        const notification = new Notification({
+            title: 'QuickPaste',
+            body: 'QuickPaste已启动, 请前往任务栏托盘中寻找。'
+        });
+    
+        notification.show();
+    }
 })

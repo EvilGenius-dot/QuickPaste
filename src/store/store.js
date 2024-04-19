@@ -61,6 +61,28 @@ class Store {
         return res
     }
 
+    update(item) {
+        let storeItems = this.get();
+        
+        for (let i = 0; i < storeItems.length; i++) {
+            let storeItem = storeItems[i];
+
+            if (storeItem.id == item.id) {
+                storeItems[i] = item
+            }
+        }
+
+        fs.writeFileSync(STORE_FILE_PATH, JSON.stringify(storeItems), { encoding: 'utf8' });
+    }
+
+    delete(item) {
+        let storeItems = this.get();
+        
+        storeItems = storeItems.filter(storeItem => storeItem.id !== item.id);
+
+        fs.writeFileSync(STORE_FILE_PATH, JSON.stringify(storeItems), { encoding: 'utf8' });
+    }
+
     createID() {
         const timestamp = Date.now().toString(36);
         const randomString = Math.random().toString(36).substr(2, 5);

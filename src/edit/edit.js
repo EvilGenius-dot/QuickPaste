@@ -4,11 +4,11 @@ const path = require('path')
 
 const store = new Store()
 
-class Popup {
+class Edit {
     constructor(updateItems) {
         const { width, height } = screen.getPrimaryDisplay().workAreaSize; // 获取主显示器的尺寸
 
-        let popupWindow = new BrowserWindow({
+        let editWindow = new BrowserWindow({
             width: 450,
             height: 190,
             resizable: false,
@@ -24,23 +24,23 @@ class Popup {
         })
 
         const x = Math.round((width - 400) / 2); // 计算屏幕中央的 x 坐标
-        popupWindow.setPosition(x, 100);
+        editWindow.setPosition(x, 100);
 
-        popupWindow.loadURL('file://' + path.join(__dirname, 'popup.html'))
+        editWindow.loadURL('file://' + path.join(__dirname, 'edit.html'))
 
-        popupWindow.on('closed', () => {
-            popupWindow = null
+        editWindow.on('closed', () => {
+            editWindow = null
         })
 
-        popupWindow.hide()
+        editWindow.hide()
 
-        this.popupWindow = popupWindow
+        this.editWindow = editWindow
 
         this.updateItems = updateItems
 
         this.bindEvent()
 
-        // popupWindow.webContents.openDevTools();
+        // editWindow.webContents.openDevTools();
     }
 
     bindEvent() {
@@ -52,13 +52,26 @@ class Popup {
             this.updateItems()
         })
 
-        ipcMain.on('add-item', (event, args) => {
-            store.push(args)
+        ipcMain.on('save-item', (event, args) => {
+            store.update(args)
 
             if (Notification.isSupported()) {
                 const notification = new Notification({
                     title: 'QuickPaste',
-                    body: '添加成功'
+                    body: '编辑成功'
+                });
+    
+                notification.show();
+            }
+        })
+
+        ipcMain.on('delete-item', (event, args) => {
+            store.delete(args)
+
+            if (Notification.isSupported()) {
+                const notification = new Notification({
+                    title: 'QuickPaste',
+                    body: '删除成功'
                 });
     
                 notification.show();
@@ -66,15 +79,15 @@ class Popup {
         })
     }
 
-    show() {
-        this.popupWindow.show()
+    show(storeItem) {
+        this.editWindow.show()
 
-        this.popupWindow.webContents.send('window-show');
+        this.editWindow.webContents.send('window-show', storeItem);
     }
 
     hide() {
-        this.popupWindow.hide()
+        this.editWindow.hide()
     }
 }
 
-module.exports = Popup
+module.exports = Edit
